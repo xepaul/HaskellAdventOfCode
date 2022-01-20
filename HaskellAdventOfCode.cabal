@@ -4,31 +4,71 @@ version:            0.1.0.0
 author:             xepaul
 maintainer:         xepaul@users.noreply.github.com
 
+common deps
+  ghc-options:  -Wall                
+                -fno-warn-incomplete-uni-patterns
+                -Wincomplete-patterns             
+                -Wincomplete-uni-patterns 
+                -Wincomplete-record-updates 
+                -Wmissing-fields   
+                -Wunused-top-binds
+                -Wunused-local-binds
+                -Wunused-pattern-binds
+                -Wunused-matches
+                -Wunused-do-bind
+                -Wunused-type-patterns
+                -Wunused-foralls
+                -Wunused-record-wildcards
+                -Wredundant-record-wildcards
 
 library HaskellAdventOfCode-lib
-    exposed-modules:  Lib
-    -- other-modules:
-    -- other-extensions:
-    build-depends:    base ^>=4.14.3.0
+    import: deps
+    exposed-modules:  Aoc2021.Day5
+    other-modules:    
+    other-extensions:                      
+    build-depends:    base ^>=4.14.3.0,
+                      parsec,
+                      parsec-numbers,
+                      parser-combinators,
+                      lens,
+                      text,
+                      containers,
+                      mtl,
+                      extra
     hs-source-dirs:   src
     default-language: Haskell2010
 
-executable HaskellAdventOfCode
-    main-is:          Main.hs
-    -- other-modules:
-    -- other-extensions:
-    build-depends:
-        base ^>=4.14.3.0,
-        HaskellAdventOfCode-lib
-
-    hs-source-dirs:   app
-    default-language: Haskell2010
-
 test-suite HaskellAdventOfCode-test
+    import: deps
     default-language: Haskell2010
     type:             exitcode-stdio-1.0
-    -- Directories containing source files.
+    build-tool-depends:
+      tasty-discover:tasty-discover  
     hs-source-dirs:   test
-    main-is:          LibTest.hs
-    build-depends:    base ^>=4.14.3.0 ,
-                      HaskellAdventOfCode-lib
+    main-is:          Driver.hs
+    other-modules:
+                      Spec.Aoc2021.Common
+                      Spec.Aoc2021.Day5Spec
+    build-depends:    base ^>=4.14.3.0 
+                    , HaskellAdventOfCode-lib
+                    , tasty                  
+                    , tasty-expected-failure
+                    , hedgehog               
+                    , tasty-hedgehog    
+                    , tasty-quickcheck   
+                    , hspec
+                    , containers
+                    , tasty-hunit
+                    , smallcheck       
+                    , lens
+                    , lens-aeson
+                    , containers
+                    , extra
+                    , parsec
+                    , split
+                    , QuickCheck
+                    , aeson
+                    , tasty-th
+                    , HUnit
+                    , filepath
+                    , directory
