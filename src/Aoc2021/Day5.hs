@@ -1,10 +1,25 @@
 {-# LANGUAGE ImportQualifiedPost #-}
 {-# LANGUAGE ParallelListComp #-}
+{-# LANGUAGE DerivingVia #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 module Aoc2021.Day5 where
 
-import Data.Either.Extra (mapLeft)
+import Control.Applicative (Applicative((<*>), (*>)))
+import Data.Bool (otherwise)
+import Data.Either.Extra (mapLeft, Either)
+import Data.Eq (Eq ((==)))
+import Data.Function ((.))
+import Data.Functor ((<$>))
+import Data.Foldable (Foldable(length, foldl), concatMap)
+import Data.List (filter, map)
 import Data.Map qualified as Map
+import Data.Ord (Ord ((>=)))
+import Data.Int (Int)
+import Data.String (String)
+import Data.Tuple (curry, snd)
+import GHC.Num (Num ((+), (*), signum, (-), abs))
+import GHC.Show (Show (show))
 import Text.Parsec.Prim (parse)
 import Text.ParserCombinators.Parsec
   ( Parser,
@@ -13,6 +28,9 @@ import Text.ParserCombinators.Parsec
     string,
   )
 import Text.ParserCombinators.Parsec.Number (nat)
+
+newtype Overlaps = Overlaps Int 
+  deriving (Eq, Ord,Num) via Int 
 
 newtype Point = Point (Int, Int) deriving (Eq, Ord,Show)
 
@@ -36,7 +54,7 @@ processLines opt =
     . plotPoints
     . concatMap (rasterLine opt)
   where
-    plotPoints :: [Point] -> [(Point, Int)]
+    plotPoints :: [Point] -> [(Point, Overlaps)]
     plotPoints = Map.toList . foldl (\s p -> Map.insertWith (+) p 1 s) Map.empty
     
 rasterLine :: DiagonalOption -> Line -> [Point]

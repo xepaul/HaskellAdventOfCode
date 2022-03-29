@@ -23,7 +23,9 @@ common deps
 
 library HaskellAdventOfCode-lib
     import: deps
-    exposed-modules:  Aoc2021.Day5
+    exposed-modules:  
+                      Aoc2021.Day5
+                      , Aoc2021.Day3 
     other-modules:    
     other-extensions:                      
     build-depends:    base ^>=4.14.3.0,
@@ -48,7 +50,9 @@ test-suite HaskellAdventOfCode-test
     main-is:          Driver.hs
     other-modules:
                       Spec.Aoc2021.Common
+                      Spec.Aoc2021.Day3Spec 
                       Spec.Aoc2021.Day5Spec
+
     build-depends:    base ^>=4.14.3.0 
                     , HaskellAdventOfCode-lib
                     , tasty                  
