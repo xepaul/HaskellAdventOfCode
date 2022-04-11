@@ -1,4 +1,4 @@
-module Spec.Aoc2021.Common
+module Spec.Aoc2020.Common
   ( Day (..),
     PuzzleInput (..),
     readPuzzleInput,
@@ -9,7 +9,7 @@ import Data.Functor ((<&>))
 import System.Directory (getCurrentDirectory)
 import System.FilePath.Posix ((</>))
 
-data Day = Day1 | Day2 | Day3 | Day5 deriving (Show)
+data Day = Day8 deriving (Show)
 
 data PuzzleInput
   = PuzzleExample1
@@ -17,7 +17,7 @@ data PuzzleInput
   deriving (Show)
 
 baseDir :: IO FilePath
-baseDir = getCurrentDirectory <&> (</> "Data" </> "Aoc2021")
+baseDir = getCurrentDirectory <&> (</> "Data" </> "Aoc2020")
 
 readPuzzleInput :: Day -> PuzzleInput -> IO String
 readPuzzleInput d p = do

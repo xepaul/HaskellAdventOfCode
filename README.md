@@ -8,4 +8,8 @@ Solutions to Advent of Code problems
 Run with 
 ```
 cabal test all --test-show-details=direct
-````
+```
+or
+```
+cabal install doctest --overwrite-policy=always && cabal build && cabal repl --build-depends=QuickCheck --build-depends=template-haskell --with-ghc=doctest
+```
