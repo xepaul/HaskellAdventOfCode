@@ -6,14 +6,14 @@ import Spec.Aoc2021.Common
     PuzzleInput (Puzzle, PuzzleExample1),
     readPuzzleInput,
   )
-import Test.Tasty
+import Test.Tasty ( testGroup, TestTree )
 import Test.Tasty.HUnit (testCase, (@?=))
 
 test_tests :: TestTree
 test_tests =
   let day = Day5
    in testGroup
-        "Unit tests Rosalind Revc"
+        "Unit tests Day5"
         [ testCase "test parse lines" $
             parseLines "0,9 -> 5,9\n82,0 -> 0,8"
               @?= Right [Line (Point (0, 9)) (Point (5, 9)), Line (Point (82, 0)) (Point (0, 8))],

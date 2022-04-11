@@ -1,6 +1,7 @@
 module Spec.Aoc2021.Day3Spec where
 
 import Aoc2021.Day3
+    ( charBin2dec, parseLines, day3Part1, day3Part2FromInput )
 import Spec.Aoc2021.Common
   ( Day (Day3),
     PuzzleInput (Puzzle, PuzzleExample1),
@@ -13,7 +14,7 @@ test_tests :: TestTree
 test_tests =
   let day = Day3
    in testGroup
-        "Unit tests Rosalind Revc"
+        "Unit tests Day3"
         [ testCase "test parse lines bin to dec" $
             charBin2dec "1001" @?= 9,
           testCase "part1 example file " $ do

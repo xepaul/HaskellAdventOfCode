@@ -24,8 +24,11 @@ common deps
 library HaskellAdventOfCode-lib
     import: deps
     exposed-modules:  
-                      Aoc2021.Day5
+                        Aoc2020.Day8
+                      , Aoc2021.Day1
+                      , Aoc2021.Day2
                       , Aoc2021.Day3 
+                      , Aoc2021.Day5
     other-modules:    
     other-extensions:                      
     build-depends:    base ^>=4.14.3.0,
@@ -36,7 +39,10 @@ library HaskellAdventOfCode-lib
                       text,
                       containers,
                       mtl,
-                      extra
+                      extra,
+                      transformers,
+                      bytestring
+
     hs-source-dirs:   src
     default-language: Haskell2010
 
@@ -50,6 +56,8 @@ test-suite HaskellAdventOfCode-test
     main-is:          Driver.hs
     other-modules:
                       Spec.Aoc2021.Common
+                      Spec.Aoc2021.Day1Spec 
+                      Spec.Aoc2021.Day2Spec 
                       Spec.Aoc2021.Day3Spec 
                       Spec.Aoc2021.Day5Spec
 
@@ -71,6 +79,7 @@ test-suite HaskellAdventOfCode-test
                     , parsec
                     , split
                     , QuickCheck
+                    , quickcheck-arbitrary-adt
                     , aeson
                     , tasty-th
                     , HUnit
