@@ -1,17 +1,21 @@
 module Spec.Aoc2021.Day5Spec where
 
+import Test.Tasty ( testGroup, TestTree )
+import Test.Tasty.HUnit (testCase, (@?=))
 import Aoc2021.Day5
 import Spec.Aoc2021.Common
-  ( Day (Day5),
+  ( Day (Day5)
+  )
+import Spec.Common
+  ( AocYear (Aoc2021),
     PuzzleInput (Puzzle, PuzzleExample1),
     readPuzzleInput,
   )
-import Test.Tasty ( testGroup, TestTree )
-import Test.Tasty.HUnit (testCase, (@?=))
 
 test_tests :: TestTree
 test_tests =
   let day = Day5
+      readPuzzleInput2021 = readPuzzleInput Aoc2021
    in testGroup
         "Unit tests Day5"
         [ testCase "test parse lines" $
@@ -30,15 +34,15 @@ test_tests =
           testCase "test raster line dia2" $
             rasterLine SupportDiagonals . head <$> parseLines "9,7 -> 7,9" @?= Right [Point (9, 7), Point (8, 8), Point (7, 9)],
           testCase "test Example Data Part1" $ do
-            v <- processInputPart1 <$> readPuzzleInput day PuzzleExample1
+            v <- processInputPart1 <$> readPuzzleInput2021 day PuzzleExample1
             v @?= Right 5,
           testCase "test Example Data Part2" $ do
-            v <- processInputPart2 <$> readPuzzleInput day PuzzleExample1
+            v <- processInputPart2 <$> readPuzzleInput2021 day PuzzleExample1
             v @?= Right 12,
           testCase "test Data Part1" $ do
-            v <- processInputPart1 <$> readPuzzleInput day Puzzle
+            v <- processInputPart1 <$> readPuzzleInput2021 day Puzzle
             v @?= Right 5306,
           testCase "test Data Part2" $ do
-            v <- processInputPart2 <$> readPuzzleInput day Puzzle
+            v <- processInputPart2 <$> readPuzzleInput2021 day Puzzle
             v @?= Right 17787
         ]

@@ -4,19 +4,24 @@ module Spec.Aoc2021.Day2Spec
     --(tests) 
     where
 
-import           Test.Tasty
-import Test.Tasty.HUnit
-import Aoc2021.Day2
-import Test.QuickCheck.Arbitrary.ADT
 import Data.Proxy
+import Test.Tasty
+import Test.Tasty.HUnit
+import Test.QuickCheck.Arbitrary.ADT
 import Test.QuickCheck.Arbitrary
 import Test.QuickCheck.Gen
+import Spec.Common
+  ( AocYear (Aoc2021),
+    PuzzleInput (Puzzle, PuzzleExample1),
+    readPuzzleInput,
+  )
 import Spec.Aoc2021.Common
-
+    (  Day(Day2) )
+import Aoc2021.Day2
 
 test_tests :: TestTree
 test_tests =
-    let day = Day2
+    let day = Day2 
     in
     testGroup "Unit tests Day2"
         [
@@ -37,19 +42,19 @@ test_tests =
            parseInstructions "up 7" @?= Right [Up 7]
 
          ,testCase "test Example Data Part1" $ do
-            v <- processInputPart1 <$> readPuzzleInput day PuzzleExample1
+            v <- processInputPart1 <$> readPuzzleInput Aoc2021 day PuzzleExample1
             v @?= Right 150
 
         , testCase "test Example Data Part2" $ do
-            v <- processInputPart2 <$> readPuzzleInput day PuzzleExample1
+            v <- processInputPart2 <$> readPuzzleInput Aoc2021 day PuzzleExample1
             v @?= Right 900
 
          , testCase "test Data Part1" $ do
-            v <- processInputPart1 <$> readPuzzleInput day Puzzle
+            v <- processInputPart1 <$> readPuzzleInput Aoc2021 day Puzzle
             v @?= Right 1698735
 
         , testCase "test  Data Part2" $ do
-            v <- processInputPart2 <$> readPuzzleInput day Puzzle
+            v <- processInputPart2 <$> readPuzzleInput Aoc2021 day Puzzle
             v @?= Right 1594785890
         ]
 

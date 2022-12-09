@@ -7,7 +7,10 @@ import Aoc2020.Day8
       parseLines,
       day8Part1FromInput )
 import Spec.Aoc2020.Common
-  ( Day (Day8),
+  ( Day (Day8)
+  )
+import Spec.Common
+  ( AocYear (Aoc2020),
     PuzzleInput (Puzzle, PuzzleExample1),
     readPuzzleInput,
   )
@@ -23,9 +26,9 @@ test_tests =
             parseLines "jmp 100\nacc 300"
               @?= Right [Jmp (Address 100), Acc (RegisterValue 300)],
           testCase "part1 example file " $ do
-            v <- day8Part1FromInput <$> readPuzzleInput day PuzzleExample1
+            v <- day8Part1FromInput <$> readPuzzleInput Aoc2020 day PuzzleExample1
             v @?= Right 5,
           testCase "part1  file " $ do
-            v <- day8Part1FromInput <$> readPuzzleInput day Puzzle
+            v <- day8Part1FromInput <$> readPuzzleInput Aoc2020 day Puzzle
             v @?= Right 1949
         ]
