@@ -17,8 +17,8 @@ module Aoc2021.Day2 where
 -- import Data.Text
 
 -- import Data.Text
-import Control.Lens (makeLenses, use,view, (&), (+=), (+~), (-=), (-~), (.=), (^.))
-import Control.Monad.Except ( MonadError )
+import Control.Lens (makeLenses, use, view, (&), (+=), (+~), (-=), (-~), (.=), (^.))
+import Control.Monad.Except (MonadError)
 import Control.Monad.RWS (modify)
 -- import Control.Monad.Trans.Reader ( ReaderT(runReaderT),asks,ask)
 import Control.Monad.Reader (MonadReader (ask), ReaderT (runReaderT))
@@ -27,6 +27,7 @@ import Control.Monad.Trans.Except qualified as Except
 import Control.Monad.Trans.State.Lazy qualified as StateLazy
 -- import Control.Monad.Trans.Reader qualified as R ( asks,ask)
 import Data.Coerce (coerce)
+import Data.Either.Extra (mapLeft)
 import GHC.Generics (Generic)
 import Text.Parsec.Prim (parse, (<|>))
 import Text.ParserCombinators.Parsec
@@ -36,7 +37,6 @@ import Text.ParserCombinators.Parsec
     string,
   )
 import Text.ParserCombinators.Parsec.Number (int)
-import Data.Either.Extra (mapLeft)
 
 class SingleAnswer a where
   singleAnswer :: a -> Int
@@ -47,9 +47,9 @@ data Instruction
   | Up Depth
   deriving (Show, Eq, Generic)
 
-parseInstructions :: String -> Either String  [Instruction]
+parseInstructions :: String -> Either String [Instruction]
 parseInstructions s = mapLeft show $ parse p "" s
-  where 
+  where
     p = sepEndBy (forwardCommand <|> downInst <|> upInst) (char '\n')
     forwardCommand :: Parser Instruction
     forwardCommand = do
@@ -114,10 +114,10 @@ data AimInstruction
   | AimUp AimPosition
   deriving (Show)
 
-aimParseInstructions ::String -> Either String  [AimInstruction]
+aimParseInstructions :: String -> Either String [AimInstruction]
 aimParseInstructions s = mapLeft show $ parse p "" s
-  where 
-    p=  sepEndBy (aimForwardCommand <|> aimDownInst <|> aimUpInst) (char '\n')
+  where
+    p = sepEndBy (aimForwardCommand <|> aimDownInst <|> aimUpInst) (char '\n')
     aimForwardCommand :: Parser AimInstruction
     aimForwardCommand = do
       _ <- string "forward" <* char ' '
@@ -235,7 +235,7 @@ aimProcessInstructionsM5 =
         AimForward x -> do
           currentAimAim <- use aimAim
           aimHozPosition += toHozPosition x
-          aimDepth +=  toDepth (coerce currentAimAim * x)
+          aimDepth += toDepth (coerce currentAimAim * x)
 
 aimProcessInstructions1 :: [AimInstruction] -> Int
 aimProcessInstructions1 =

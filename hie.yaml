@@ -3,8 +3,5 @@ cradle:
     - path: "src"
       component: "HaskellAdventOfCode:lib:HaskellAdventOfCode-lib"
 
-    - path: "app/Main.hs"
-      component: "HaskellAdventOfCode:exe:HaskellAdventOfCode"
-
     - path: "test"
       component: "HaskellAdventOfCode:test:HaskellAdventOfCode-test"
