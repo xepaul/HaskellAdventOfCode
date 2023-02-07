@@ -54,7 +54,7 @@ parseInstructions s = mapLeft show $ parse p "" s
     forwardCommand :: Parser Instruction
     forwardCommand = do
       _ <- string "forward" <* char ' '
-      Forward . toHozPosition <$> int
+      Forward . toHozPosition <$> int  
 
     downInst :: Parser Instruction
     downInst = do

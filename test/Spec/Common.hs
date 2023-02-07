@@ -20,7 +20,7 @@ data AocYear
   deriving (Show)
 
 baseDir :: Show y => y -> IO FilePath
-baseDir y = getCurrentDirectory <&> (</> "Data" </> (show y))
+baseDir y = getCurrentDirectory <&> (</> "Data" </> show y)
 
 readPuzzleInput :: (Show y, Show d) => y ->  d -> PuzzleInput -> IO String
 readPuzzleInput y d p = do

@@ -1,7 +1,7 @@
 cradle:
   cabal:
     - path: "src"
-      component: "HaskellAdventOfCode:lib:HaskellAdventOfCode-lib"
+      component: "lib:HaskellAdventOfCode"
 
     - path: "test"
       component: "HaskellAdventOfCode:test:HaskellAdventOfCode-test"
