@@ -22,7 +22,7 @@ common deps
                 -Wredundant-record-wildcards
 
 common base1
-  build-depends:      base >= 4.16.4 && < 4.17.0
+  build-depends:      base >=4.17.2.1 
 
 library
     import: base1
