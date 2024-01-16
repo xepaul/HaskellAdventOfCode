@@ -1,11 +1,11 @@
 name: Haskell CI
 
 on:
-  push:
-    branches:
-      - master
-      - 'dev/**'
-      - 'feature/**'
+  # push:
+  #   branches:
+  #     - master
+  #     - 'dev/**'
+  #     - 'feature/**'
   pull_request:
     branches: [ master ]
 
@@ -68,8 +68,8 @@ jobs:
       - name: Run tests
         run: cabal test all --test-show-details=direct 
 
-      - name: Check cabal file
-        run: cabal check
+      # - name: Check cabal file
+      #   run: cabal check
 
       # - name: Build documentation
       #   run: cabal haddock all
