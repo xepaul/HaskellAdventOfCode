@@ -12,11 +12,14 @@ import System.FilePath.Posix ((</>))
 data PuzzleInput
   = PuzzleExample1
   | Puzzle
+  | Puzzle2Example1
+  | Puzzle2
   deriving (Show)
 
 data AocYear
   = Aoc2020
   | Aoc2021
+  | Aoc2023
   deriving (Show)
 
 baseDir :: Show y => y -> IO FilePath
