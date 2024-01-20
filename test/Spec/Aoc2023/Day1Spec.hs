@@ -1,10 +1,11 @@
 module Spec.Aoc2023.Day1Spec where
 
 import Aoc2023.Day1
-  ( Info (..),
+  ( 
     numberParser,
     problem1,
     problem2,
+    numberParserAndWords
   )
 import Spec.Aoc2023.Common
   ( Day (Day1),
@@ -17,6 +18,9 @@ import Spec.Common
 import Test.Tasty (TestTree, testGroup)
 import Test.Tasty.HUnit (testCase, (@?=))
 import Text.Parsec.Prim (parse, (<|>))
+import Text.Parsec.Prim (lookAhead, many, parse, try, (<|>))
+import Data.Maybe (catMaybes, mapMaybe)
+
 
 test_tests :: TestTree
 test_tests =
@@ -37,6 +41,10 @@ test_tests =
           testCase "part2 real file " $ do
             v <- problem2 <$> readPuzzleInput year day Puzzle
             v @?= Right 54728
+             ,testCase "numberParser  example 1 prob1" $
+            parse numberParserAndWords "" "one" @?= (Right $ Just 1)
+          ,testCase "numberParser  test2" $
+             parse (catMaybes <$> many numberParserAndWords) "" "xtwone3four" @?= (Right [2,1,3,4])
         ] ::
         TestTree
 

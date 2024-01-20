@@ -26,88 +26,31 @@ import Text.ParserCombinators.Parsec
   )
 import Text.Read.Lex (isSymbolChar)
 
-data DigitText = OneText | TwoText | ThreeText | FourText | FiveText | SixText | SevenText | EightText | NineText deriving (Show)
-
-oneTextParser :: Parser DigitText
-oneTextParser = do
-  string "one"
-  return OneText
-
-twoTextParser :: Parser DigitText
-twoTextParser = do
-  string "two"
-  return TwoText
-
-threeTextParser :: Parser DigitText
-threeTextParser = do
-  string "three"
-  return ThreeText
-
-fourTextParser :: Parser DigitText
-fourTextParser = do
-  string "four"
-  return FourText
-
-fiveTextParser :: Parser DigitText
-fiveTextParser = do
-  string "five"
-  return FiveText
-
-sixTextParser :: Parser DigitText
-sixTextParser = do
-  string "six"
-  return SixText
-
-sevenTextParser :: Parser DigitText
-sevenTextParser = do
-  string "seven"
-  return SevenText
-
-eightTextParser :: Parser DigitText
-eightTextParser = do
-  string "eight"
-  return EightText
-
-nineTextParser :: Parser DigitText
-nineTextParser = do
-  string "nine"
-  return NineText
-
-convertDigitTextToChar :: DigitText -> Char
-convertDigitTextToChar dt = case dt of
-  OneText -> '1'
-  TwoText -> '2'
-  ThreeText -> '3'
-  FourText -> '4'
-  FiveText -> '5'
-  SixText -> '6'
-  SevenText -> '7'
-  EightText -> '8'
-  NineText -> '9'
-
-digitTextParser :: Parser DigitText
-digitTextParser =
-  try oneTextParser
-    <|> try twoTextParser
-    <|> try threeTextParser
-    <|> try fourTextParser
-    <|> try fiveTextParser
-    <|> try sixTextParser
-    <|> try sevenTextParser
-    <|> try eightTextParser
-    <|> try nineTextParser
-
-numberWordParser :: Parser Char
+numberWordParser :: Parser ( Int)
 numberWordParser = do
-  v <- lookAhead (convertDigitTextToChar <$> digitTextParser)
+  v <- lookAhead (digitTextParser)
   _ <- anyChar
-  return v
+  return $  v
+  where
+    digitTextParser :: Parser Int
+    digitTextParser =
+       try (string "one" >> return 1)
+        <|> try (string "two" >> return 2)
+        <|> try (string "three" >> return 3)
+        <|> try (string "four" >> return 4)
+        <|> try (string "five" >> return 5)
+        <|> try (string "six" >> return 6)
+        <|> try (string "seven" >> return 7)
+        <|> try (string "eight" >> return 8)
+        <|> try (string "nine" >> return 9)
+
+
 
 numberParser :: Parser (Maybe Int)
 numberParser = (Just . (\x -> read [x]) <$> digit) <|> Nothing <$ satisfy isLetter
 
 numberParserAndWords :: Parser (Maybe Int)
-numberParserAndWords = ((\x -> Just $ read [x]) <$> (digit <|> numberWordParser)) 
+numberParserAndWords =  Just  <$> ((\x ->read [x] )<$>digit <|> numberWordParser)
                           <|> Nothing <$ satisfy isLetter
 
 parseLines :: Parser [[Int]]
