@@ -25,16 +25,26 @@ import Text.ParserCombinators.Parsec
     sepEndBy,
   )
 import Text.Read.Lex (isSymbolChar)
+import Text.ParserCombinators.Parsec (optionMaybe)
 
-numberWordParser :: Parser ( Int)
+
+--ff =m
+
+
+singleDigitParser :: Parser Int
+singleDigitParser = (\x -> read [x]) <$> digit
+
+
+ 
+numberWordParser :: Parser Int
 numberWordParser = do
-  v <- lookAhead (digitTextParser)
+  v <- lookAhead digitTextParser
   _ <- anyChar
-  return $  v
+  return v
   where
     digitTextParser :: Parser Int
     digitTextParser =
-       try (string "one" >> return 1)
+      try (string "one" >> return 1)
         <|> try (string "two" >> return 2)
         <|> try (string "three" >> return 3)
         <|> try (string "four" >> return 4)
@@ -46,32 +56,30 @@ numberWordParser = do
 
 
 
-numberParser :: Parser (Maybe Int)
-numberParser = (Just . (\x -> read [x]) <$> digit) <|> Nothing <$ satisfy isLetter
 
-numberParserAndWords :: Parser (Maybe Int)
-numberParserAndWords =  Just  <$> ((\x ->read [x] )<$>digit <|> numberWordParser)
-                          <|> Nothing <$ satisfy isLetter
 
-parseLines :: Parser [[Int]]
-parseLines = sepEndBy parseString (char '\n')
+solverCommon :: Parser ( Int) -> String -> Either ParseError Int
+solverCommon p = fmap (sum . fmap sumOfNumbers) . parse parseLines ""
   where
-    parseString = catMaybes <$> many numberParser
+    sumOfNumbers vv = 10 * head vv + last vv
+    parseLines :: Parser [[Int]]
+    parseLines = sepEndBy parseString (char '\n')
+      where
+        parseString = catMaybes <$> many numberParserAndWords
+        
+        numberParserAndWords :: Parser (Maybe Int)
+        numberParserAndWords =  Just  <$> p
+                                    <|> Nothing <$ satisfy isLetter
 
-parseLinesWithWords :: Parser [[Int]]
-parseLinesWithWords = sepEndBy parseString (char '\n')
-  where
-    parseString = catMaybes <$> many numberParserAndWords
 
 problem1 :: String -> Either ParseError Int
-problem1 = fmap (sum . fmap sumOfNumbers) . parse parseLines ""
-  where
-    sumOfNumbers vv = 10 * head vv + last vv
+problem1 = solverCommon singleDigitParser
+
 
 problem2 :: String -> Either ParseError Int
-problem2 = fmap (sum . fmap sumOfNumbers) . parse parseLinesWithWords ""
-  where
-    sumOfNumbers vv = 10 * head vv + last vv
+problem2 = solverCommon (singleDigitParser <|> numberWordParser)
+
+ 
 
 exampleInput = "1abc2\npqr3stu8vwx\na1b2c3d4e5f\ntreb7uchet"
 
