@@ -8,7 +8,7 @@ import Spec.Aoc2021.Common
   )
 import Spec.Common
   ( AocYear (Aoc2021),
-    PuzzleInput (Puzzle, PuzzleExample1),
+    PuzzleInput (..),
     readPuzzleInput,
   )
 
