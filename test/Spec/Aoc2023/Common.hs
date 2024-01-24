@@ -3,4 +3,4 @@ module Spec.Aoc2023.Common
   )
 where
 
-data Day = Day1 deriving (Show)
+data Day = Day1 | Day5 deriving (Show)
