@@ -2,7 +2,7 @@ module Aoc2023.Day1
   ( problem1,
     problem2,
     singleDigitOrnumberWordParser,
-    numberWordParser,
+    overlappingNumberWordParser,
     parseLine
   ) where
 
@@ -40,10 +40,10 @@ singleDigitParser :: Parser Int
 singleDigitParser = (\x -> read [x]) <$> digit
 
 singleDigitOrnumberWordParser :: Parser Int
-singleDigitOrnumberWordParser = singleDigitParser <|> numberWordParser
+singleDigitOrnumberWordParser = singleDigitParser <|> overlappingNumberWordParser
 
-numberWordParser :: Parser Int
-numberWordParser = lookAhead digitTextParser <* anyChar
+overlappingNumberWordParser :: Parser Int
+overlappingNumberWordParser = lookAhead digitTextParser <* anyChar
   where
     digitTextParser = choice $ map parseWord
       [ ("one", 1)

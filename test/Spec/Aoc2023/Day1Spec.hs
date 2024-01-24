@@ -1,7 +1,7 @@
 module Spec.Aoc2023.Day1Spec where
 
 import Aoc2023.Day1
-  ( numberWordParser,
+  ( overlappingNumberWordParser,
     parseLine,
     problem1,
     problem2,
@@ -31,10 +31,10 @@ test_tests =
    in testGroup
         ("Unit tests parsing year" ++ show year ++ " day" ++ show day)
         [ testCase "test word parser" $
-            parse numberWordParser "" "one" @?= Right 1
-        , testCase "numberParser  test2" $
+            parse overlappingNumberWordParser "" "one" @?= Right 1
+        , testCase "test overlappingnumberParser  " $
             parse parseDigitAndRest "" "twone" @?= Right (2, "wone")
-        , testCase "numberParser  test2" $
+        , testCase "test overlappingNumberWordParser   test2" $
             parse (parseLine singleDigitOrnumberWordParser) "" "twone" @?= Right [2, 1]
         , testCase "part1 example file " $ do
             v <- problem1 <$> readPuzzleInput year day PuzzleExample1
@@ -54,7 +54,7 @@ test_tests =
 
 parseDigitAndRest :: Parser (Int, String)
 parseDigitAndRest = do
-  digit <- numberWordParser
+  digit <- overlappingNumberWordParser
   rest <- many1 anyChar
   return (digit, rest)
 
