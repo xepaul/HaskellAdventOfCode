@@ -1,4 +1,10 @@
-module Aoc2023.Day1 where
+module Aoc2023.Day1
+  ( problem1,
+    problem2,
+    singleDigitOrnumberWordParser,
+    overlappingNumberWordParser,
+    parseLine
+  ) where
 
 import Data.Char (isLetter)
 import Data.Maybe (catMaybes)
@@ -12,62 +18,43 @@ import Text.ParserCombinators.Parsec
     satisfy,
     sepEndBy,
   )
+import Text.Parsec.Combinator (choice)
 
 problem1 :: String -> Either ParseError Int
 problem1 = solverCommon singleDigitParser
 
 problem2 :: String -> Either ParseError Int
-problem2 = solverCommon (singleDigitParser <|> numberWordParser)
+problem2 = solverCommon singleDigitOrnumberWordParser
 
 
 solverCommon :: Parser Int -> String -> Either ParseError Int
 solverCommon p = fmap (sum . fmap sumOfNumbers) . parse parseLines ""
   where
     sumOfNumbers vv = 10 * head vv + last vv
-    parseLines = parseLine `sepEndBy` char '\n'
+    parseLines = parseLine p `sepEndBy` char '\n'    
+
+parseLine :: Parser Int -> Parser [Int]
+parseLine p = catMaybes <$> many (Just <$> p <|> Nothing <$ satisfy isLetter)
 
 singleDigitParser :: Parser Int
 singleDigitParser = (\x -> read [x]) <$> digit
 
-numberWordParser :: Parser Int
-numberWordParser = do
-  v <- lookAhead digitTextParser
-  _ <- anyChar
-  return v
+singleDigitOrnumberWordParser :: Parser Int
+singleDigitOrnumberWordParser = singleDigitParser <|> overlappingNumberWordParser
+
+overlappingNumberWordParser :: Parser Int
+overlappingNumberWordParser = lookAhead digitTextParser <* anyChar
   where
-    digitTextParser :: Parser Int
-    digitTextParser =
-      try (string "one" >> return 1)
-        <|> try (string "two" >> return 2)
-        <|> try (string "three" >> return 3)
-        <|> try (string "four" >> return 4)
-        <|> try (string "five" >> return 5)
-        <|> try (string "six" >> return 6)
-        <|> try (string "seven" >> return 7)
-        <|> try (string "eight" >> return 8)
-        <|> try (string "nine" >> return 9)
-
-parseLine :: Parser (Maybe Int)
-parseLine = catMaybes <$> many (Just <$> p <|> Nothing <$ satisfy isLetter)
-    parseLine = catMaybes <$> many (Just <$> p <|> Nothing <$ satisfy isLetter)
-
-singleDigitParser :: Parser Int
-singleDigitParser = (\x -> read [x]) <$> digit
-
-numberWordParser :: Parser Int
-numberWordParser = do
-  v <- lookAhead digitTextParser
-  _ <- anyChar
-  return v
-  where
-    digitTextParser :: Parser Int
-    digitTextParser =
-      try (string "one" >> return 1)
-        <|> try (string "two" >> return 2)
-        <|> try (string "three" >> return 3)
-        <|> try (string "four" >> return 4)
-        <|> try (string "five" >> return 5)
-        <|> try (string "six" >> return 6)
-        <|> try (string "seven" >> return 7)
-        <|> try (string "eight" >> return 8)
-        <|> try (string "nine" >> return 9)
+    digitTextParser = choice $ map parseWord
+      [ ("one", 1)
+      , ("two", 2)
+      , ("three", 3)
+      , ("four", 4)
+      , ("five", 5)
+      , ("six", 6)
+      , ("seven", 7)
+      , ("eight", 8)
+      , ("nine", 9)
+      ]
+    parseWord :: (String, Int) -> Parser Int
+    parseWord (word, value) = try $ string word >> return value
