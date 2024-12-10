@@ -35,6 +35,7 @@ library
                       , Aoc2020.Day8
                       , Aoc2023.Day1
                       , Aoc2023.Day5
+                      , Aoc2024.Day1
     other-modules:    
     other-extensions:                      
     build-depends:    parsec,
@@ -71,7 +72,9 @@ test-suite HaskellAdventOfCode-test
                       Spec.Aoc2021.Day5Spec                      
                       Spec.Aoc2023.Day1Spec    
                       Spec.Aoc2023.Day5Spec    
-                      Spec.Aoc2023.Common                   
+                      Spec.Aoc2023.Common    
+                      Spec.Aoc2024.Day1Spec 
+                      Spec.Aoc2024.Common              
 
     build-depends:    HaskellAdventOfCode
                     , tasty                  
@@ -96,3 +99,15 @@ test-suite HaskellAdventOfCode-test
                     , HUnit
                     , filepath
                     , directory
+
+benchmark year-day-benchmarks
+  type:                exitcode-stdio-1.0
+  main-is:             Benchmarks.hs
+  other-modules:       Common
+  hs-source-dirs:      benchmarks
+  build-depends:       base
+                     , criterion
+                     , HaskellAdventOfCode
+                     , filepath
+                    , directory
+  default-language:    Haskell2010
