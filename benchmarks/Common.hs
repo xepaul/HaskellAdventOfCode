@@ -1,14 +1,15 @@
-module Spec.Common
+module Common
   ( AocYear (..),
     PuzzleInput (..),
     readPuzzleInput,
+    Day(..)
   )
 where
 
 import Data.Functor ((<&>))
 import System.Directory (getCurrentDirectory)
 import System.FilePath.Posix ((</>))
-
+data Day = Day1 | Day5 deriving (Show)
 data PuzzleInput
   = PuzzleExample1
   | Puzzle
