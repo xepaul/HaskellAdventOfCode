@@ -7,6 +7,12 @@ import Data.List (sort)
 import Control.Arrow ((>>>))
 import Data.Function ((&))
 import Data.Either.Extra (mapLeft)
+import qualified Data.Map as Map
+import Data.Map (Map)
+import Data.Maybe (fromMaybe)
+
+
+
 -- Define a parser for a single tuple
 tupleParser :: Parser (Int, Int)
 tupleParser = do
@@ -75,3 +81,31 @@ prop1a'''' i = i
 
 -- >>> prop1 [(3,4),(4,3),(2,5),(1,3),(3,9),(3,3)]
 -- 11
+
+
+prob2 :: [(Int, Int)] -> Int
+prob2 = unzip
+            >>> (\(a, b) -> (a, getLookup b))
+            >>> uncurry (\l f ->  map (\a -> a * f a) l)
+            >>> sum
+  where
+    countOccurrences :: (Ord a) => [a] -> Map a Int
+    countOccurrences = foldr (\x -> Map.insertWith (+) x 1) Map.empty
+
+    getLookup :: (Ord a) => [a] -> (a -> Int)
+    getLookup xs = let m = countOccurrences xs
+                    in  fromMaybe 0 . flip Map.lookup m 
+
+
+prob2_1 :: [(Int, Int)] -> Int
+prob2_1 = unzip
+            >>> (\(a, b) -> (a, getLookup b))
+            >>> uncurry (\l f ->  map (\a -> a * f a) l)
+            >>> sum
+  where
+    countOccurrences :: (Ord a) => [a] -> Map a Int
+    countOccurrences = foldr (\x -> Map.insertWith (+) x 1) Map.empty
+
+    getLookup :: (Ord a) => [a] -> (a -> Int)
+    getLookup xs = let m = countOccurrences xs
+                    in  fromMaybe 0 . flip Map.lookup m 
