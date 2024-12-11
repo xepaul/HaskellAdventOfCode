@@ -35,7 +35,14 @@ test_tests =
             input <- readPuzzleInput year day Puzzle           
             let result = prop1 <$> parseTuples input
             result @?= Right 1765812
-        
+        , testCase "part2 example file " $ do
+            input <- readPuzzleInput year day PuzzleExample1           
+            let result = prob2 <$> parseTuples input
+            result @?= Right 31
+        , testCase "part2  file " $ do
+            input <- readPuzzleInput year day Puzzle           
+            let result = prob2 <$> parseTuples input
+            result @?= Right 1765812
         ] ::
         TestTree
 
