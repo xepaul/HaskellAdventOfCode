@@ -36,6 +36,7 @@ library
                       , Aoc2023.Day1
                       , Aoc2023.Day5
                       , Aoc2024.Day1
+                      , Aoc2024.Day2
     other-modules:    
     other-extensions:                      
     build-depends:    parsec,
@@ -74,6 +75,7 @@ test-suite HaskellAdventOfCode-test
                       Spec.Aoc2023.Day5Spec    
                       Spec.Aoc2023.Common    
                       Spec.Aoc2024.Day1Spec 
+                      Spec.Aoc2024.Day2Spec 
                       Spec.Aoc2024.Common              
 
     build-depends:    HaskellAdventOfCode

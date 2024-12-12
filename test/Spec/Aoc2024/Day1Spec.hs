@@ -42,7 +42,7 @@ test_tests =
         , testCase "part2  file (samefile as part1) " $ do
             input <- readPuzzleInput year day Puzzle           
             let result = prob2 <$> parseTuples input
-            result @?= Right 1765812
+            result @?= Right 20520794
         ] ::
         TestTree
 
