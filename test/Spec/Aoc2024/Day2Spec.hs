@@ -1,6 +1,6 @@
 module Spec.Aoc2024.Day2Spec where
 
-import Aoc2024.Day2 ( simpleReportsParser, prob1 )
+import Aoc2024.Day2 ( simpleReportsParser, prob1 ,prob2)
   
 import Spec.Aoc2024.Common
   ( Day (Day2),
@@ -40,6 +40,16 @@ test_tests =
             input <- readPuzzleInput year day Puzzle           
             let result = prob1 <$> simpleReportsParser input
             result @?= Right 299
+
+        ,testCase "part2 example file " $ do
+            input <- readPuzzleInput year day PuzzleExample1           
+            let result = prob2 <$> simpleReportsParser input
+            result @?= Right 4
+        , testCase "part2  file " $ do
+            input <- readPuzzleInput year day Puzzle           
+            let result = prob2 <$> simpleReportsParser input
+            result @?= Right 364
+
         ] ::
         TestTree
 
