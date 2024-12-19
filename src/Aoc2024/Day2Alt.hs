@@ -1,5 +1,5 @@
 {-# LANGUAGE BangPatterns #-}
-module Aoc2024.Day2_Alt
+module Aoc2024.Day2Alt
  where
 
 import Text.Parsec ( char, digit, sepEndBy, many1, parse )
