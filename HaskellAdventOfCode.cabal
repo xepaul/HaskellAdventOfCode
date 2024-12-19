@@ -37,8 +37,10 @@ library
                       , Aoc2023.Day5
                       , Aoc2024.Day1
                       , Aoc2024.Day2
+                      , Aoc2024.Day2Alt
                       , Aoc2024.Day4
-                      , Aoc2024.Day2_Alt
+                      , Aoc2024.Day4Alt
+                      
     other-modules:    
     other-extensions:                      
     build-depends:    parsec,

@@ -13,7 +13,7 @@ import Data.Map (Map)
 import Control.Monad (mfilter)
 import Data.Vector.Sized (Vector)
 import qualified Data.Vector.Sized as V
-
+import GHC.TypeLits (KnownNat)
 type GridCoord = (Int, Int)
 
 {-# INLINE (.+.) #-}
@@ -27,79 +27,32 @@ prob1 ::  String-> Int
 prob1 input=
   let inputGrid = createGridMap $ lines input
   in length 
-      $ filter (== True) 
+      $ filter id
       $ concatMap (\xy -> map (matchWord "XMAS" inputGrid xy) directions) 
       $ Map.keys inputGrid  
 
-matchWord :: String ->Map GridCoord Char -> GridCoord -> (Int, Int) -> Bool
-matchWord word grid (x, y) (dx, dy)  =
-    let coords = map (\i -> (x, y) .+. (i * dx, i * dy)) [0 ..]
+matchWord :: String -> Map GridCoord Char -> GridCoord -> (Int, Int) -> Bool
+matchWord word grid startCoord (dx, dy)  =
+    let coords = map (\i -> startCoord .+. (i * dx, i * dy)) [0 ..]
         checkMatch (coord, c) = mfilter (==c) $ Map.lookup coord grid        
     in isJust $ mapM checkMatch $ zip coords word
 
 directions :: [(Int, Int)]
 directions = [(x, y) | x <- [-1, 0, 1], y <- [-1, 0, 1], (x, y) /= (0, 0)]
 
-prob2 ::  String-> Int
+prob2 :: String -> Int
 prob2 input=
   let inputGrid = createGridMap $ lines input
-  in length $ catMaybes $ map (findPattern'' inputGrid) $ Map.keys inputGrid
-
-findPattern'' :: Map GridCoord Char -> GridCoord -> Maybe (Vector 5 Char)
-findPattern'' grid coord =     
-  mfilter (`elem` patterns)  $ V.mapM (\offset -> Map.lookup (coord .+. offset) grid) offsets
+  in length $ catMaybes $ map (findPattern'' patterns offsets inputGrid) $ Map.keys inputGrid
   where
-    offsets = V.fromTuple ((0, 0), (2, 0), (1, 1), (0, 2), (2, 2)) :: Vector 5 (Int, Int)
     patterns = [V.fromTuple ('M', 'S', 'A', 'M', 'S'), 
                 V.fromTuple ('M', 'M', 'A', 'S', 'S'), 
                 V.fromTuple ('S', 'S', 'A', 'M', 'M'), 
                 V.fromTuple ('S', 'M', 'A', 'S', 'M')]
-
-
-
-
-matchWord' :: String ->Map GridCoord Char -> GridCoord -> (Int, Int) -> Bool
-matchWord' wordToMatch grid (x, y) (dx, dy)  = 
-    isJust $ mfilter (==wordToMatch) 
-      $ mapM (\coord -> Map.lookup coord grid ) 
-      $ zipWith (\i _ -> (x, y) .+. (i * dx, i * dy)) [0 ..]  wordToMatch
-    
-
-findPattern :: Map GridCoord Char -> GridCoord -> Maybe GridCoord
-findPattern grid coord = do    
-    spots <- V.mapM (\offset -> Map.lookup (coord .+. offset) grid) offsets
-    if spots `elem` patterns
-        then Just coord
-        else Nothing
-  where
     offsets = V.fromTuple ((0, 0), (2, 0), (1, 1), (0, 2), (2, 2)) :: Vector 5 (Int, Int)
-    patterns = [V.fromTuple ('M', 'S', 'A', 'M', 'S'), 
-                V.fromTuple ('M', 'M', 'A', 'S', 'S'), 
-                V.fromTuple ('S', 'S', 'A', 'M', 'M'), 
-                V.fromTuple ('S', 'M', 'A', 'S', 'M')]
 
-findPattern' :: Map GridCoord Char -> GridCoord -> Maybe GridCoord
-findPattern' grid coord@(x, y) = do
-    spots <- (,,,,)
-        <$> Map.lookup ((.+.) (x,y) (0,0)) grid
-        <*> Map.lookup ((.+.) (x,y) (2,0)) grid
-        <*> Map.lookup ((.+.) (x,y) (1,1)) grid
-        <*> Map.lookup ((.+.) (x,y) (0,2)) grid
-        <*> Map.lookup ((.+.) (x,y) (2,2)) grid
-       
-    if spots `elem` patterns
-        then Just coord
-        else Nothing
-  where
-    patterns = [('M', 'S', 'A', 'M', 'S'), --should compute this and coords
-                ('M', 'M', 'A', 'S', 'S'), 
-                ('S', 'S', 'A', 'M', 'M'), 
-                ('S', 'M', 'A', 'S', 'M')]
-
-
-xmaxOptions :: [[((Int,Int),(Int,Int))]]
-xmaxOptions =[[x,y] | x <- [((0,0),(1,1)),((2,2),(-1,-1))], y <- [((0,0),(1,1)),((2,2),(-1,-1))]]
-
--- >>> xmaxOptions
--- [[((0,0),(1,1)),((0,0),(1,1))],[((0,0),(1,1)),((2,2),(-1,-1))],[((2,2),(-1,-1)),((0,0),(1,1))],[((2,2),(-1,-1)),((2,2),(-1,-1))]]
-
+findPattern'' :: (KnownNat n, Eq a) => [Vector n a] -> Vector n (Int, Int) -> Map GridCoord a -> GridCoord -> Maybe (Vector n a)
+findPattern'' patterns offsets grid coord =     
+  let lookupOffset = (`Map.lookup` grid) . (coord .+. )
+      spots = V.mapM lookupOffset offsets
+  in mfilter (`elem` patterns) spots 
